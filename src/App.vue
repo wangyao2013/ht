@@ -19,5 +19,8 @@
     width: 100%;
     height: 100%
   }
+  .el-submenu__title{
+    padding-left: 0 !important
+  }
 
 </style>

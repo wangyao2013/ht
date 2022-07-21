@@ -97,19 +97,21 @@
       login(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let data={
-                username:this.ruleForm.name,
-                password:this.ruleForm.pass
+            let data = {
+              username: this.ruleForm.name,
+              password: this.ruleForm.pass
             }
             LoginApi(data).then(res => {
-            //   console.log(res);
-            this.$router.push("/wel")
+              //   console.log(res);
+              this.$router.push("/wel")
             })
+
           } else {
             console.log('登录失败!!')
             return false
           }
         })
+
 
       }
     },

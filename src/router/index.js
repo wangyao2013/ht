@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     name: 'home',
+    redirect:"/index",
     component: HomeView
   },
   {

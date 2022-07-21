@@ -20,12 +20,20 @@
   .one,
   .el-menu-vertical-demo {
     height: 100%;
+    // text-align: center
+  }
+ .title{
+    padding: 0 !important
   }
 
   .el-main {
     background-color: #E9EEF3;
     color: #333;
     height: 100%
+  }
+  .sp1{
+    box-sizing: border-box;
+    padding-left: 70px !important
   }
 
 </style>
@@ -42,7 +50,7 @@
         </p>
       </el-header>
       <el-container>
-        <el-aside :width="isCollapse==false?'200px':'30px'">
+        <el-aside :width="isCollapse==false?'220px':'60px'">
           <!-- 侧边栏 -->
           <p class="el-icon-s-operation"  @click="isCollapse=!isCollapse"></p>
           <el-menu :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
@@ -50,14 +58,16 @@
             <el-submenu  :index="item.path" v-for="(item,i) in leftList" :key="i">
               <template slot="title">
                 <i class="el-icon-location"></i>
-                <span>{{item.authName}}</span>
+                <span  class="title">{{item.authName}}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :index="ele.path" v-for="(ele,index) in item.children" :key="index">{{ele.authName}}</el-menu-item>
+               
+                <el-menu-item :index="ele.path" v-for="(ele,index) in item.children" :key="index" class="sp1">{{ele.authName}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
           </el-menu>
+          
         </el-aside>
         <el-main>
           <router-view></router-view>
