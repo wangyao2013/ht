@@ -12,17 +12,18 @@
     background-color: #D3DCE6;
     color: #333;
     text-align: center;
-    height: 100%
+    // height: calc(100vh - 30px) !important
   }
 
   .el-container,
   .is-vertical,
   .one,
   .el-menu-vertical-demo {
-    height: 100%;
-    // text-align: center
+    // height: 100%;
+    height: calc(100vh - 52px) !important 
   }
- .title{
+
+  .title {
     padding: 0 !important
   }
 
@@ -31,10 +32,19 @@
     color: #333;
     height: 100%
   }
-  .sp1{
+
+  .sp1 {
     box-sizing: border-box;
     padding-left: 70px !important
   }
+
+  // .el-menu-vertical-demo{
+  //   padding-left: 0
+  // }
+
+  // .aside{
+  //   height: calc( 100vh - 16px )
+  // }
 
 </style>
 
@@ -50,57 +60,68 @@
         </p>
       </el-header>
       <el-container>
-        <el-aside :width="isCollapse==false?'220px':'60px'">
+        <el-aside class="aside" :width="isCollapse==false?'220px':'60px'">
           <!-- 侧边栏 -->
-          <p class="el-icon-s-operation"  @click="isCollapse=!isCollapse"></p>
-          <el-menu :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
-            active-text-color="#ffd04b" router>
-            <el-submenu  :index="item.path" v-for="(item,i) in leftList" :key="i">
+          <p class="el-icon-s-operation" @click="isCollapse=!isCollapse"></p>
+          <el-menu :collapse="isCollapse" :default-active="active" class="el-menu-vertical-demo"
+            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
+            <el-submenu :index="item.path" v-for="(item,i) in leftList" :key="i">
               <template slot="title">
                 <i class="el-icon-location"></i>
-                <span  class="title">{{item.authName}}</span>
+                <span class="title">{{item.authName}}</span>
               </template>
               <el-menu-item-group>
-               
-                <el-menu-item :index="ele.path" v-for="(ele,index) in item.children" :key="index" class="sp1">{{ele.authName}}</el-menu-item>
+                <el-menu-item :index="ele.path" v-for="(ele,index) in item.children" :key="index" class="sp1">
+                  {{ele.authName}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-
           </el-menu>
-          
         </el-aside>
         <el-main>
           <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
-
   </div>
 </template>
 <script>
-import {Getmenus} from "../http/https"
-export default {
+  import {
+    Getmenus
+  } from "../http/https"
+  export default {
     data() {
-        return {
-             leftList:[],
-             isCollapse:false
+      return {
+        leftList: [],
+        isCollapse: false,
+        active: ""
+      }
+    },
+    watch: {
+      $route: {
+        deep: true,
+        immediate: true,
+        handler(oval, nval) {
+          // console.log(oval.matched[1].name);
+          this.active = oval.matched[1].name
         }
+      }
     },
     methods: {
-        render(){
-            let token=sessionStorage.getItem("token")
-            Getmenus(token).then(res=>{
-                console.log(res);
-                this.leftList=res.data.data
-            })
-        },
-        back(){
-            sessionStorage.removeItem("token")
-            this.$router.push("/login")
-        }
+      render() {
+        const token = sessionStorage.getItem("token")
+        Getmenus(token).then(res => {
+          console.log(res);
+          this.leftList = res.data.data
+        })
+      },
+      back() {
+        sessionStorage.removeItem("token")
+        this.$router.push("/login")
+      }
     },
     created() {
-        this.render()
+      this.render()
     },
-}
+  }
+
 </script>

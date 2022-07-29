@@ -11,8 +11,8 @@ const http = axios.create({
 })
 http.interceptors.request.use(
   (config) => {
-    console.log(config);
-    if (config.url != "/login") {
+    // console.log(config);
+    if (config.url !== "/login") {
       config.headers.Authorization = window.sessionStorage.getItem('token')
     }
 
@@ -24,9 +24,9 @@ http.interceptors.request.use(
 )
 http.interceptors.response.use(
   (config) => {
-    console.log(config.data.meta.msg);
-
-    let arr = [200, 201, 204]
+    // console.log(config.data.meta.msg);
+    console.log(config);
+    const arr = [200, 201, 204]
     if (arr.includes(config.data.meta.status)) {
       Message({
         message: config.data.meta.msg,
@@ -36,17 +36,16 @@ http.interceptors.response.use(
       Message.error(config.data.meta.msg)
     }
     // sessionStorage.setItem('token', config.data.data.token)
-    if (config.config.url == "/login") {
+    if (config.config.url === "/login") {
       sessionStorage.setItem('token', config.data.data.token)
     }
-    if (config.data.meta.msg == "无效token"){
-      router.replace({path:"/login"})
+    if (config.data.meta.msg === "无效token") {
+      router.replace({
+        path: "/login"
+      })
       sessionStorage.removeItem("token")
-
     }
-      return config
-
-
+    return config
   },
   (err) => {
     alert(err)

@@ -12,7 +12,7 @@
       }
     },
     created() {
-      let obj = {
+      const obj = {
         name: '222'
       };
       let _name = obj.name;

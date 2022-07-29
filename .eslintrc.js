@@ -25,6 +25,18 @@ module.exports = {
     "quotes": 0,
     "arrow-spacing": 0,
     "semi": 0,
-    "object-curly-spacing": 0
+    "object-curly-spacing": 0,
+    "prefer-const": 0,
+    "key-spacing": 0,
+    "no-multiple-empty-lines": 0,
+    "padded-blocks": 0,
+    "prefer-const": 0,
+    "padded-blocks": 0,
+    "key-spacing": 0,
+    "space-before-blocks": 0,
+    "no-unused-vars": 0,
+    "import/first": 0,
+    "quote-props": 0,
+    "space-in-parens": 0
   }
 }

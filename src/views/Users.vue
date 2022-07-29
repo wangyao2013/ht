@@ -91,7 +91,6 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="add('ruleForm')">确 定</el-button>
-          <el-button type="primary" @click="emitOk()">确 定</el-button>
         </span>
       </el-dialog>
       <!-- 编辑用户的弹框 -->
@@ -151,7 +150,7 @@
   export default {
     data() {
       const emailCheck = (rule, value, callback) => {
-        let reg = /^\w+@[a-z0-9]+.[a-z]{2,4}$/
+        const reg = /^\w+@[a-z0-9]+.[a-z]{2,4}$/
         if (!reg.test(value)) {
           callback(new Error("请输入正确邮箱格式"))
         } else {
@@ -159,7 +158,7 @@
         }
       }
       const mobileCheck = (rule, value, callback) => {
-        let reg = /^1[3456789]\d{9}$/
+        const reg = /^1[3456789]\d{9}$/
         if (!reg.test(value)) {
           callback(new Error("请输入正确的手机号"))
         } else {
@@ -184,6 +183,8 @@
         },
         dialogVisible: false,
         id: "",
+        username: "",
+        role_name: "",
         // 验证
         ruleForm: {
           username: "",
@@ -193,10 +194,7 @@
         },
         rolesList: [],
         newRole: "",
-        user: {
-
-
-        },
+        user: {},
         rules: {
           username: [{
             required: true,
@@ -212,7 +210,7 @@
             required: true,
             message: '请输入密码',
             trigger: 'blur'
-          }, ],
+          }],
           mobile: [{
             required: true,
             message: '请输入电话号',
@@ -233,23 +231,19 @@
       }
     },
     methods: {
-      search(){
-
-        let time=setTimeout(()=>{
-          this.render()
-          
-        },1000)
-      },
       setOk() {
         //  console.log(this.newRole);
         this.dialogVisible2 = false
-        let data = {
+        const data = {
           id: this.user.id,
-          rid: this.newRole
+          rid: this.newRole,
+          email: this.user.email,
+          mobile: this.user.mobile
         }
         console.log(data);
-        setRole(data)
-        this.render()
+        setRole(data).then(res => {
+          this.render()
+        })
       },
       set(e) {
         this.dialogVisible2 = true
@@ -269,20 +263,17 @@
             // console.log(res);
             this.render()
           })
-
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           });
         });
-
-
       },
       emitOk(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let data = {
+            const data = {
               id: this.id,
               email: this.ruleForm2.email,
               mobile: this.ruleForm2.mobile
@@ -298,15 +289,12 @@
             return false;
           }
         });
-
-
       },
       emit(e) {
         console.log(e);
         this.dialogVisible3 = true
         this.ruleForm2 = e
         this.id = e.id
-
       },
       show() {
         this.dialogVisible = !this.dialogVisible
@@ -317,7 +305,7 @@
         this.ruleForm.email = ""
       },
       change(id, status) {
-        let data = {
+        const data = {
           id: id,
           mg_state: status
         }
@@ -328,7 +316,7 @@
           if (valid) {
             addUsers(this.ruleForm).then(res => {
               console.log(res);
-              if (res.data.meta.status == 201) {
+              if (res.data.meta.status === 201) {
                 this.$message({
                   message: res.data.meta.msg,
                   type: 'success'
@@ -344,10 +332,8 @@
             return false;
           }
         });
-
       },
       handleSizeChange(e) {
-        //    console.log(e);
         this.page.pagesize = e
         this.render()
       },
@@ -361,7 +347,6 @@
           this.tableData = res.data.data.users
           this.total = res.data.data.total
         })
-
       }
     },
     created() {
